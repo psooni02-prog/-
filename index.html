@@ -1,268 +1,58 @@
 <!doctype html>
-<html lang="ko">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>헬스장 직원 체크리스트</title>
 <style>
-:root{--bg:#f4f6f8;--card:#fff;--ink:#18212f;--muted:#667085;--line:#e4e7ec;--accent:#176b4d;--accent2:#e7f5ee;--danger:#b42318}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif}
-header{background:#123c2d;color:white;padding:22px 16px}header .wrap,main{max-width:920px;margin:auto}h1{font-size:24px;margin:0 0 6px}header p{margin:0;color:#d8e9e0;font-size:14px}
-main{padding:16px;display:grid;gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 2px 8px #10182808}
-h2{font-size:18px;margin:0 0 14px}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-label.field{display:grid;gap:6px;font-size:13px;color:var(--muted)}input,select,textarea{font:inherit;padding:11px 12px;border:1px solid #cfd5dd;border-radius:10px;background:white;color:var(--ink);width:100%}
-.progress-row{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:13px;color:var(--muted);margin-bottom:8px}.bar{height:8px;background:#e9edf1;border-radius:20px;overflow:hidden}.bar>div{height:100%;width:0;background:var(--accent);transition:width .15s}
-details.section{border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden;margin-bottom:10px}details summary{cursor:pointer;padding:14px 12px;font-weight:700;display:flex;justify-content:space-between;gap:10px;list-style:none}details summary::-webkit-details-marker{display:none}.section-count{font-size:12px;color:var(--muted);font-weight:500;white-space:nowrap}
-.items{padding:0 12px 10px}.item{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-top:1px solid #f0f2f5;line-height:1.45}.item input{width:20px;height:20px;flex:none;margin:1px 0 0;accent-color:var(--accent)}.item span{flex:1;font-size:14px}.item.checked span{color:#7a8492;text-decoration:line-through}
-.item small{display:block;color:var(--muted);font-size:12px;margin-top:3px}
-.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:10px;padding:11px 14px;font-weight:700;cursor:pointer;font-size:14px}.primary{background:var(--accent);color:white}.secondary{background:#eef2f6;color:#273444}.danger{background:#fff0ef;color:var(--danger)}.status{font-size:13px;color:var(--muted);margin-top:10px;min-height:18px}.warning{background:#fff8e7;border:1px solid #f3dfaa;padding:12px;border-radius:10px;color:#714d00;font-size:13px;line-height:1.5}.saved-list{display:grid;gap:8px}.saved-entry{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:10px}.saved-entry strong{font-size:14px}.saved-entry small{display:block;color:var(--muted);margin-top:3px}.saved-entry button{flex:none}.subheading{font-size:14px;font-weight:700;margin:14px 0 8px}.hidden{display:none!important}
-@media(max-width:560px){.fields{grid-template-columns:1fr}h1{font-size:21px}main{padding:10px}.card{padding:13px}.saved-entry{align-items:flex-start}.actions .btn{flex:1}}
-</style>
-</head>
-<body>
-<header><div class="wrap"><h1>헬스장 직원 체크리스트</h1><p>오픈 · 근무 중 · 마감 업무를 체크하고 날짜별로 저장하세요.</p></div></header>
+*{box-sizing:border-box}body{margin:0;background:#f3f5f7;color:#18212f;font-family:Arial,"Malgun Gothic",sans-serif}header{background:#123c2d;color:#fff;padding:20px max(16px,calc((100% - 900px)/2))}h1{font-size:24px;margin:0 0 6px}header p{margin:0;font-size:14px}main{max-width:900px;margin:auto;padding:16px;display:grid;gap:14px}.card{background:white;border:1px solid #e0e5eb;border-radius:14px;padding:16px}h2{font-size:18px;margin:0 0 14px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}label.field{font-size:13px;color:#667085;display:grid;gap:6px}input,select,textarea{font:inherit;padding:11px;border:1px solid #cbd3dd;border-radius:9px;width:100%;background:#fff;color:#18212f}.progress{height:8px;background:#e7ebef;border-radius:9px;overflow:hidden;margin-top:8px}.progress div{height:100%;width:0;background:#176b4d}.progressText{font-size:13px;text-align:right;color:#667085;margin-top:12px}.section{border:1px solid #e0e5eb;border-radius:10px;margin:10px 0;overflow:hidden}.section summary{font-weight:bold;padding:13px;cursor:pointer;background:#fafbfc}.items{padding:0 13px}.item{display:flex;gap:10px;align-items:flex-start;padding:12px 0;border-top:1px solid #eef0f3;font-size:14px;line-height:1.45}.item input{width:20px;height:20px;flex:none;margin:0;accent-color:#176b4d}.item small{display:block;color:#667085;margin-top:4px}.item.done span{text-decoration:line-through;color:#89919d}.buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.btn{border:0;border-radius:9px;padding:11px 14px;font-weight:bold;cursor:pointer;background:#edf1f5}.btn.primary{background:#176b4d;color:white}.status{font-size:13px;color:#667085;margin-top:10px}.record{border:1px solid #e0e5eb;border-radius:9px;padding:12px;display:flex;justify-content:space-between;gap:10px;margin:8px 0}.record small{display:block;color:#667085;margin-top:4px}.warning{padding:12px;background:#fff8e7;border:1px solid #f1dca6;border-radius:9px;font-size:13px;line-height:1.5;margin-bottom:12px}@media(max-width:580px){.fields{grid-template-columns:1fr}main{padding:10px}.record{align-items:flex-start}}
+</style></head><body>
+<header><h1>헬스장 직원 체크리스트</h1><p>오픈 · 미들 · 마감 업무를 체크하고 날짜별로 저장하세요.</p></header>
 <main>
-<section class="card">
-<h2>근무 정보</h2>
-<div class="fields">
-<label class="field">직원명<input id="employee" placeholder="예: 홍길동" autocomplete="name"></label>
-<label class="field">근무 날짜<input id="workDate" type="date"></label>
-<label class="field">근무 구분<select id="shift"><option value="오픈">오픈</option><option value="근무 중">근무 중</option><option value="마감">마감</option></select></label>
-<label class="field">특이사항 / 미완료 사유<input id="notes" placeholder="없으면 비워두세요"></label>
-</div>
-<div style="margin-top:16px"><div class="progress-row"><span>현재 체크 진행률</span><strong id="progressText">0 / 0 (0%)</strong></div><div class="bar"><div id="progressBar"></div></div></div>
-</section>
-
-<section class="card">
-<h2>체크리스트</h2>
-<div class="warning" style="margin-bottom:12px">사용 전 확인: PB-1 등 세정제는 제품 표시사항에 따라 사용하고, 서로 다른 세정제를 섞지 마세요. 전기기기·런닝머신은 물이 내부로 들어가지 않도록 주의하세요.</div>
-<div id="checklist"></div>
-<div class="actions" style="margin-top:14px">
-<button class="btn primary" id="saveBtn">저장하기</button>
-<button class="btn secondary" id="loadBtn">기록 불러오기</button>
-<button class="btn secondary" id="exportBtn">CSV 내보내기</button>
-<button class="btn secondary" id="resetBtn">체크 초기화</button>
-</div>
-<div id="status" class="status" role="status" aria-live="polite"></div>
-</section>
-
-<section class="card">
-<h2>저장된 기록</h2>
-<div class="fields" style="margin-bottom:12px">
-<label class="field">직원명으로 검색<input id="searchName" placeholder="직원명 입력"></label>
-<label class="field">날짜로 검색<input id="searchDate" type="date"></label>
-</div>
-<div class="actions" style="margin-bottom:12px"><button class="btn secondary" id="searchBtn">기록 검색</button><button class="btn secondary" id="showAllBtn">전체 보기</button></div>
-<div id="savedRecords" class="saved-list"><p class="status">기록을 불러오려면 검색을 눌러주세요.</p></div>
-</section>
-
-<section class="card">
-<h2>클라우드 저장 설정</h2>
-<p style="font-size:14px;line-height:1.6;color:var(--muted);margin-top:0">다른 휴대폰이나 컴퓨터에서도 기록을 보려면 Supabase 설정이 필요합니다. 설정 전에는 이 브라우저에만 임시 저장되므로, 중요한 기록은 CSV로 백업하세요.</p>
-<div class="fields">
-<label class="field">Supabase Project URL<input id="supabaseUrl" placeholder="https://xxxx.supabase.co"></label>
-<label class="field">Supabase anon/publishable key<input id="supabaseKey" placeholder="공개용 anon/publishable key"></label>
-</div>
-<div class="actions" style="margin-top:12px"><button class="btn primary" id="connectBtn">클라우드 연결</button><button class="btn secondary" id="disconnectBtn">연결 해제</button></div>
-<div class="status" id="cloudStatus">클라우드 미연결</div>
-<div class="warning">보안 안내: Supabase Auth로 로그인한 사용자만 기록을 읽고 쓸 수 있도록 SQL 정책을 적용하세요. 서비스 role key는 절대 이 페이지에 입력하거나 공개하지 마세요. 직원 계정은 Supabase 대시보드에서 관리하는 구성을 권장합니다.</div>
-</section>
-<footer style="text-align:center;color:#7b8491;font-size:12px;padding:0 0 20px">기록은 저장 버튼을 눌러야 보관됩니다. 퇴근 전 저장 여부를 확인하세요.</footer>
+<section class="card"><h2>근무 정보</h2><div class="fields">
+<label class="field">직원명<input id="employee" placeholder="예: 홍길동"></label>
+<label class="field">근무 날짜<input id="date" type="date"></label>
+<label class="field">근무 구분<select id="shift"><option>오픈</option><option>미들</option><option>마감</option></select></label>
+<label class="field">특이사항 / 미완료 사유<input id="notes" placeholder="없으면 비워두세요"></label></div>
+<div class="progressText" id="progressText">0 / 0 (0%)</div><div class="progress"><div id="progressBar"></div></div></section>
+<section class="card"><h2>체크리스트</h2><div class="warning">세정제는 제품 표시사항에 따라 사용하고 서로 다른 세정제를 섞지 마세요. 전기기기 내부에 물이 들어가지 않도록 주의하세요.</div><div id="checklist"></div>
+<div class="buttons"><button class="btn primary" id="save">저장하기</button><button class="btn" id="load">기록 불러오기</button><button class="btn" id="csv">CSV 내보내기</button><button class="btn" id="reset">체크 초기화</button></div><div class="status" id="status"></div></section>
+<section class="card"><h2>저장된 기록</h2><div class="fields"><label class="field">직원명으로 검색<input id="searchName" placeholder="직원명 입력"></label><label class="field">날짜로 검색<input id="searchDate" type="date"></label></div><div class="buttons"><button class="btn" id="search">기록 검색</button><button class="btn" id="all">전체 보기</button></div><div id="records" class="status">저장된 기록은 이 브라우저에서 검색할 수 있습니다.</div></section>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SECTIONS = [
-{title:"출근 및 기본 정리",shift:"오픈",items:[
-["출근 완료 여부를 대표님께 보고하기"],
-["필요한 옷 정리하기"],
-["실내화 분배 및 정리하기"],
-["정수기 닦고 상태 점검하기"],
-["종이컵·휴지 확인 및 보충하기"],
-["정수기 주변과 쓰레기통 정리하기"],
-["화장실: 소변기 물 내리기, 변기·세면대 솔로 닦기"],
-["화장실 바닥 세제로 물청소하기"],
-["청소기와 쓰레기통을 통행에 방해되지 않게 정리하기"],
-["탈의실 옷·수건·바닥 정리하기 (성별 구역 구분)"],
-["정수기 옆 케틀벨·덤벨 정리하기"],
-["덤벨 3kg 위치 확인 및 정리하기"],
-["폼롤러와 매트 정리하기"]
-]},
-{title:"걸레 사용 청소",shift:"오픈",items:[
-["걸레 위치 확인하기", "회장실 창고 오른쪽 벽 옷걸이"],
-["정문 신발장 닦기"],
-["후문 신발장 닦기"],
-["남자 가방 보관함 닦기"],
-["여자 가방 보관함 닦기"],
-["런닝머신 상단·버튼 주변 닦기"],
-["런닝머신 벨트 옆 발판 및 아래쪽 닦기", "젖은 걸레로 닦은 뒤 마른 수건으로 마무리"],
-["천국의 계단 전체 닦기"]
-]},
-{title:"외부 정리",shift:"오픈",items:[
-["후문 담배꽁초와 쓰레기 줍기", "플라스틱 빗자루 사용"]
-]},
-{title:"근무 중 수시 점검",shift:"근무 중",items:[
-["천국의 계단·런닝머신 땀 자국 닦기"],
-["운동기구 청소 및 틀어진 기구 원위치하기"],
-["런닝머신·천국의 계단 TV 전원 끄기 (사용 종료 시)"],
-["카운터 앞 레그프레스 원판을 한쪽당 1개씩만 끼워 정리하기"],
-["거울의 손자국 닦기"],
-["인포메이션 데스크 깨끗하게 유지하기"],
-["네이버 톡톡 수신 여부 확인 및 응대하기"],
-["홍보물 제작·게시 확인하기", "전봇대 족자, 블로그, 클립 등"],
-["정수기 물통 확인 및 비우기"],
-["신발장에 오래 보관된 신발 발견 시 보관 후 사진 보고하기"],
-["바닥에 보이는 쓰레기 수시로 줍기"]
-]},
-{title:"비품 주문 체크",shift:"근무 중",items:[
-["비누 재고 확인하기"],
-["휴지 재고 확인하기"],
-["종이컵 재고 확인하기"],
-["부족한 비품을 카카오톡으로 보고하기"],
-["쿠팡 주문 시 배송 주소 확인하기"],
-["주문 완료 후 품목·수량·예상 도착일 보고하기"]
-]},
-{title:"마감 - 화장실",shift:"마감",items:[
-["변기·소변기·세면대에 세정제 사용 후 닦고 물로 마무리하기", "제품 표시사항에 맞게 사용하고 세정제를 혼합하지 않기"],
-["화장실 바닥 쓸고 세제로 물청소하기", "오픈 때 바닥 청소를 완료했다면 물청소 생략 가능"],
-["거울 깨끗하게 닦기"],
-["바닥 물기와 잔여 세제 확인하기"]
-]},
-{title:"마감 - 헬스장 내부",shift:"마감",items:[
-["기구·머신 표면 닦기"],
-["원판과 덤벨 제자리에 정리하기"],
-["청소기로 바닥 청소하기", "청소기는 화장실에 위치"],
-["정수기와 주변 청소하기"],
-["정수기 물통 비우기"],
-["쓰레기통 확인 후 쓰레기 버리기"],
-["신발장 실내화 수량 균형 맞추고 정리하기"],
-["옷과 수건 정리하고 부족분 채우기"],
-["바닥과 기구 주변에 쓰레기가 없는지 확인하기"]
-]},
-{title:"마감 - 샤워실",shift:"마감",items:[
-["샤워실 표면에 세정제 사용 후 솔로 닦기", "제품 표시사항에 맞게 사용"],
-["샤워실 옆면의 누런 물때 제거하기"],
-["샤워실 거울 닦기"],
-["배수구 주변을 솔로 닦기"],
-["밀대/솔 뒷부분으로 바닥 물기 제거하기"],
-["쓰레기통 비우기"],
-["배수 상태와 미끄러운 구역 확인하기"]
-]},
-{title:"마감 - 탈의실",shift:"마감",items:[
-["청소기로 바닥 청소하기"],
-["옷·수건 등을 보라색 포대에 담기", "이동 시 끌고 이동해도 무방"],
-["샤워실 앞 물기 제거 발판 교체 여부 확인하기", "교체 요일: 월요일·목요일"]
-]},
-{title:"마감 - 최종 점검 및 보고",shift:"마감",items:[
-["음악 소리를 7~9% 정도로 줄이기", "완전히 끄지 않기"],
-["전체 청소 상태 최종 점검하기"],
-["환풍기 끄기 / 켜지 않기"],
-["화장실 포함 각 구역 소등하기"],
-["출입문 잠금 확인하기", "탈의실·화장실 문은 잠그지 않기"],
-["바닥에 보이는 쓰레기 줍기"],
-["각 구역 청소 완료 사진 촬영하기"],
-["대표님께 청소 상태 사진과 특이사항 보고하기"],
-["퇴근 전 저장 버튼 눌러 체크 기록 저장하기"]
-]}
+const sections=[
+["오픈 - 출근 및 기본 정리",[
+["출근 완료 여부를 대표님께 보고하기"],["필요시 옷 정리하기"],["실내화 분배하기"],["정수기 닦고 점검하기"],["종이컵·휴지 확인 및 보충하기"],["쓰레기통과 정수기 주변 정리하기"],["화장실 소변기 물 내리고 변기·세면대 솔로 닦기"],["화장실 바닥 세제로 물청소하기"],["청소기와 쓰레기통을 통행에 방해되지 않게 정리하기"],["탈의실 옷·수건·바닥 정리하기", "성별 구역에 맞게"],["정수기 옆 케틀벨·덤벨 정리하기"],["덤벨 3kg 위치 정리하기"],["폼롤러와 매트 정리하기"],["걸레로 정문·후문 신발장 닦기"],["남녀 가방 보관함 닦기"],["런닝머신 상단·버튼 주변 닦기"],["런닝머신 벨트 옆 발판 닦기","젖은 걸레 후 마른 수건으로 마무리"],["천국의 계단 전체 닦기"],["후문 담배꽁초·쓰레기 줍기","플라스틱 빗자루 사용"]]],
+["미들 - 근무 중 수시 점검",[
+["천국의 계단·런닝머신 땀 자국 닦기"],["사용 종료한 유산소 기구 TV 전원 끄기"],["기구 청소하고 틀어진 기구 원위치하기"],["카운터 앞 레그프레스 원판 한쪽당 1개씩 정리하기"],["거울 손자국 닦기"],["인포메이션 데스크 깨끗하게 관리하기"],["네이버 톡톡 확인 및 응대하기"],["홍보물 제작·게시 확인하기","전봇대 족자, 블로그, 클립 등"],["정수기 물통 확인 및 비우기"],["오래 보관 중인 신발 발견 시 사진 찍어 대표님께 보고하기"],["바닥 쓰레기 수시로 줍기"],["비누·휴지·종이컵 재고 확인하기"],["부족한 비품 카카오톡으로 보고하기"],["쿠팡 주문 시 배송 주소 확인하기"],["주문 품목·수량·도착 예정일 보고하기"]]],
+["마감 - 화장실",[
+["변기·소변기·세면대 세정 후 물로 마무리하기","PB-1 등 제품 표시사항 준수, 세정제 혼합 금지"],["바닥 쓸고 세제로 물청소하기","오픈 때 완료했다면 물청소 생략 가능"],["거울 깨끗하게 닦기"],["바닥 물기와 잔여 세제 확인하기"]]],
+["마감 - 헬스장 내부",[
+["기구·머신 표면 닦기"],["원판과 덤벨 제자리에 정리하기"],["청소기로 바닥 청소하기","청소기는 화장실에 위치"],["정수기와 주변 청소하기"],["정수기 물통 비우기"],["쓰레기통 확인 후 비우기"],["신발장 실내화 정리하기"],["옷과 수건 정리하고 부족분 채우기"],["기구 주변과 바닥에 쓰레기가 없는지 확인하기"]]],
+["마감 - 샤워실",[
+["샤워실 전체 세정 후 솔로 닦기"],["샤워실 옆면 누런 물때 제거하기"],["샤워실 거울 닦기"],["배수구 주변을 솔로 닦기"],["솔 뒷부분으로 바닥 물기 제거하기"],["쓰레기통 비우기"],["배수 상태와 미끄러운 구역 확인하기"]]],
+["마감 - 탈의실 및 최종 보고",[
+["청소기로 탈의실 바닥 청소하기"],["옷·수건을 보라색 포대에 담기"],["샤워실 앞 물기 제거 발판 교체 여부 확인하기","교체 요일: 월요일·목요일"],["음악 소리를 7~9% 정도로 줄이기","완전히 끄지 않기"],["전체 청소 상태 최종 점검하기"],["환풍기 켜지 않기"],["화장실 포함 각 구역 소등하기"],["출입문 잠금 확인하기","탈의실·화장실 문은 잠그지 않기"],["바닥에 보이는 쓰레기 줍기"],["각 구역 청소 사진 촬영하기"],["대표님께 청소 사진과 특이사항 보고하기"],["퇴근 전 체크리스트 저장하기"]]]
 ];
-let supabase = null, cloudUser = null, currentRecordId = null;
-const $ = id => document.getElementById(id);
-const today = new Date(); const localDate = new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
-$("workDate").value = localDate;
-const keyFor = (date,name,shift) => `gym-checklist:${date}:${name.trim().toLowerCase()}:${shift}`;
-function allItems(){return SECTIONS.flatMap((s,si)=>s.items.map((it,ii)=>({id:`${si}-${ii}`,section:s.title,text:it[0],hint:it[1]||""})));}
-function renderChecklist(){
- const root=$("checklist"); root.innerHTML="";
- SECTIONS.forEach((s,si)=>{
-  const det=document.createElement("details"); det.className="section"; det.open = s.shift=== $("shift").value;
-  const sum=document.createElement("summary"); sum.innerHTML=`<span>${s.title}</span><span class="section-count" id="count-${si}">0 / ${s.items.length}</span>`; det.appendChild(sum);
-  const items=document.createElement("div"); items.className="items";
-  s.items.forEach((it,ii)=>{
-   const id=`${si}-${ii}`, label=document.createElement("label"); label.className="item";
-   const cb=document.createElement("input"); cb.type="checkbox"; cb.dataset.id=id; cb.addEventListener("change",()=>{label.classList.toggle("checked",cb.checked);updateProgress();});
-   const span=document.createElement("span"); span.textContent=it[0]; if(it[1]){const small=document.createElement("small");small.textContent=it[1];span.appendChild(small);}
-   label.append(cb,span); items.appendChild(label);
-  });
-  det.appendChild(items);root.appendChild(det);
- });
- updateProgress();
+const $=id=>document.getElementById(id);
+function localToday(){const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
+$("date").value=localToday();
+function render(){
+ const root=$("checklist");root.innerHTML="";
+ sections.forEach((sec,si)=>{const d=document.createElement("details");d.className="section";d.open=si===0;
+ const sum=document.createElement("summary");sum.textContent=sec[0]+" · 0/"+sec[1].length;d.appendChild(sum);
+ const items=document.createElement("div");items.className="items";
+ sec[1].forEach((item,ii)=>{const lab=document.createElement("label");lab.className="item";const cb=document.createElement("input");cb.type="checkbox";cb.dataset.id=si+"-"+ii;const span=document.createElement("span");span.append(document.createTextNode(item[0]));if(item[1]){const small=document.createElement("small");small.textContent=item[1];span.appendChild(small)}cb.addEventListener("change",()=>{lab.classList.toggle("done",cb.checked);progress();});lab.append(cb,span);items.appendChild(lab)});
+ d.appendChild(items);root.appendChild(d)});progress();
 }
-function checkedMap(){const o={};document.querySelectorAll('#checklist input[type=checkbox]').forEach(c=>o[c.dataset.id]=c.checked);return o;}
-function applyChecks(map={}){document.querySelectorAll('#checklist input[type=checkbox]').forEach(c=>{c.checked=!!map[c.dataset.id];c.closest('.item').classList.toggle('checked',c.checked);});updateProgress();}
-function updateProgress(){
- const boxes=[...document.querySelectorAll('#checklist input[type=checkbox]')],done=boxes.filter(b=>b.checked).length,total=boxes.length,pct=total?Math.round(done/total*100):0;
- $("progressText").textContent=`${done} / ${total} (${pct}%)`; $("progressBar").style.width=pct+"%";
- SECTIONS.forEach((s,si)=>{const sectionBoxes=boxes.filter(b=>b.dataset.id.startsWith(si+"-"));const count=sectionBoxes.filter(b=>b.checked).length;const el=$("count-"+si);if(el)el.textContent=`${count} / ${sectionBoxes.length}`;});
-}
-function payload(){return {employee:$("employee").value.trim(),work_date:$("workDate").value,shift:$("shift").value,notes:$("notes").value.trim(),checks:checkedMap(),updated_at:new Date().toISOString()};}
-function setStatus(msg){$("status").textContent=msg;}
-function localSave(p){const k=keyFor(p.work_date,p.employee,p.shift);const all=JSON.parse(localStorage.getItem("gym-checklist-records")||"{}");all[k]={...p,id:k,storage:"local"};localStorage.setItem("gym-checklist-records",JSON.stringify(all));currentRecordId=k;}
-async function save(){
- const p=payload(); if(!p.employee||!p.work_date){setStatus("직원명과 근무 날짜를 입력해주세요.");return;}
- if(supabase && cloudUser){
-  try{
-   const row={employee:p.employee,work_date:p.work_date,shift:p.shift,notes:p.notes,checks:p.checks,updated_at:p.updated_at,updated_by:cloudUser.id};
-   let q=supabase.from("gym_checklist_records");
-   let result=currentRecordId && !String(currentRecordId).startsWith("local") ? await q.update(row).eq("id",currentRecordId).select().single() : await q.insert(row).select().single();
-   if(result.error) throw result.error; currentRecordId=result.data.id;
-   localSave(p);setStatus("클라우드에 저장되었습니다. 날짜별 기록에서도 확인할 수 있습니다.");await searchRecords();return;
-  }catch(e){setStatus("클라우드 저장 실패: "+e.message+" (브라우저에도 임시 저장했습니다.)");localSave(p);return;}
- }
- localSave(p);setStatus("이 브라우저에 저장했습니다. 다른 기기에서도 보려면 Supabase 클라우드를 연결하세요.");
-}
-function loadRecord(r){$("employee").value=r.employee||"";$("workDate").value=r.work_date||localDate;$("shift").value=r.shift||"오픈";$("notes").value=r.notes||"";currentRecordId=r.id||null;applyChecks(r.checks||{});setStatus(`${r.work_date} ${r.employee} 기록을 불러왔습니다.`);}
-function localRecords(){return Object.values(JSON.parse(localStorage.getItem("gym-checklist-records")||"{}"));}
-async function searchRecords(){
- const name=$("searchName").value.trim().toLowerCase(),date=$("searchDate").value;let records=[];
- if(supabase&&cloudUser){
-  let q=supabase.from("gym_checklist_records").select("*").order("work_date",{ascending:false}).limit(200);
-  if(name)q=q.ilike("employee",`%${name}%`);if(date)q=q.eq("work_date",date);
-  const {data,error}=await q;if(error){$("savedRecords").innerHTML=`<p class="status">클라우드 조회 실패: ${error.message}</p>`;return;}records=data||[];
- } else records=localRecords().filter(r=>(!name||r.employee.toLowerCase().includes(name))&&(!date||r.work_date===date)).sort((a,b)=>b.work_date.localeCompare(a.work_date));
- renderRecords(records);
-}
-function renderRecords(records){
- const root=$("savedRecords");root.innerHTML="";
- if(!records.length){root.innerHTML='<p class="status">조건에 맞는 저장 기록이 없습니다.</p>';return;}
- records.forEach(r=>{
-  const done=Object.values(r.checks||{}).filter(Boolean).length,total=allItems().length;
-  const entry=document.createElement("div");entry.className="saved-entry";
-  const info=document.createElement("div");info.innerHTML=`<strong>${esc(r.work_date)} · ${esc(r.employee)} · ${esc(r.shift)}</strong><small>${done}/${total}개 완료 · ${esc(r.notes||"특이사항 없음")}</small>`;
-  const btn=document.createElement("button");btn.className="btn secondary";btn.textContent="불러오기";btn.addEventListener("click",()=>loadRecord(r));
-  entry.append(info,btn);root.appendChild(entry);
- });
-}
-function esc(v){return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function exportCSV(){
- const records=localRecords();if(!records.length){setStatus("내보낼 로컬 기록이 없습니다.");return;}
- const rows=[["날짜","직원명","근무구분","완료수","전체수","특이사항",...allItems().map(i=>i.section+" - "+i.text)]];
- records.forEach(r=>rows.push([r.work_date,r.employee,r.shift,Object.values(r.checks||{}).filter(Boolean).length,allItems().length,r.notes,...allItems().map(i=>r.checks?.[i.id]?"완료":"미완료")]));
- const csv="\uFEFF"+rows.map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
- const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8;"}));a.download="헬스장_직원체크리스트.csv";a.click();URL.revokeObjectURL(a.href);
-}
-function resetChecks(){if(!confirm("현재 체크 상태를 모두 초기화할까요? 저장된 기록은 삭제되지 않습니다."))return;applyChecks({});setStatus("현재 화면의 체크 상태만 초기화했습니다.");}
-async function connectCloud(){
- const url=$("supabaseUrl").value.trim(),key=$("supabaseKey").value.trim();
- if(!url||!key){$("cloudStatus").textContent="Project URL과 anon/publishable key를 입력해주세요.";return;}
- try{
-  if(!window.supabase?.createClient)throw new Error("Supabase 라이브러리를 불러오지 못했습니다. 인터넷 연결을 확인하세요.");
-  supabase=window.supabase.createClient(url,key);
-  const {data,error}=await supabase.auth.getSession();if(error)throw error;
-  let session=data.session;
-  if(!session){
-   const email=prompt("Supabase에 등록된 직원 이메일을 입력하세요 (계정은 관리자 대시보드에서 미리 생성해야 합니다).");if(!email)return;
-   const password=prompt("비밀번호를 입력하세요.");if(!password)return;
-   const res=await supabase.auth.signInWithPassword({email,password});if(res.error)throw res.error;session=res.data.session;
-  }
-  cloudUser=session.user;$("cloudStatus").textContent="클라우드 연결됨 · "+(cloudUser.email||"로그인 사용자");
-  localStorage.setItem("gym-supabase-url",url);localStorage.setItem("gym-supabase-key",key);await searchRecords();
- }catch(e){supabase=null;cloudUser=null;$("cloudStatus").textContent="연결 실패: "+e.message;}
-}
-async function disconnectCloud(){if(supabase)await supabase.auth.signOut();supabase=null;cloudUser=null;$("cloudStatus").textContent="클라우드 연결 해제됨";}
-$("saveBtn").addEventListener("click",save);$("loadBtn").addEventListener("click",()=>searchRecords());$("exportBtn").addEventListener("click",exportCSV);$("resetBtn").addEventListener("click",resetChecks);
-$("searchBtn").addEventListener("click",searchRecords);$("showAllBtn").addEventListener("click",()=>{$("searchName").value="";$("searchDate").value="";searchRecords();});
-$("connectBtn").addEventListener("click",connectCloud);$("disconnectBtn").addEventListener("click",disconnectCloud);
-$("shift").addEventListener("change",()=>{SECTIONS.forEach((s,si)=>{const d=$("checklist").children[si];if(d)d.open=s.shift===$("shift").value;});});
-renderChecklist();
-$("supabaseUrl").value=localStorage.getItem("gym-supabase-url")||"";$("supabaseKey").value=localStorage.getItem("gym-supabase-key")||"";
-</script>
-</body></html>
+function progress(){const c=[...document.querySelectorAll('#checklist input[type=checkbox]')],done=c.filter(x=>x.checked).length,total=c.length,pct=total?Math.round(done/total*100):0;$("progressText").textContent=`${done} / ${total} (${pct}%)`;$("progressBar").style.width=pct+"%";[...document.querySelectorAll(".section")].forEach((d,i)=>{const boxes=[...d.querySelectorAll("input")];d.querySelector("summary").textContent=sections[i][0]+` · ${boxes.filter(x=>x.checked).length}/${boxes.length}`})}
+function key(){return "gymcheck:"+$("date").value+":"+$("employee").value.trim().toLowerCase()+":"+$("shift").value}
+function allRecords(){try{return JSON.parse(localStorage.getItem("gymcheck_records")||"{}")}catch(e){return {}}}
+function current(){const checks={};document.querySelectorAll('#checklist input').forEach(c=>checks[c.dataset.id]=c.checked);return {employee:$("employee").value.trim(),date:$("date").value,shift:$("shift").value,notes:$("notes").value,checks,updated:new Date().toISOString()}}
+function setStatus(s){$("status").textContent=s}
+function save(){const r=current();if(!r.employee||!r.date){setStatus("직원명과 근무 날짜를 입력해주세요.");return}const a=allRecords();a[key()]={...r,id:key()};localStorage.setItem("gymcheck_records",JSON.stringify(a));setStatus("저장 완료! 이 브라우저의 저장된 기록에 보관했습니다.");searchRecords()}
+function load(){const r=allRecords()[key()];if(!r){setStatus("해당 직원·날짜·근무 구분의 기록이 없습니다.");return}$("employee").value=r.employee;$("date").value=r.date;$("shift").value=r.shift;$("notes").value=r.notes||"";document.querySelectorAll('#checklist input').forEach(c=>{c.checked=!!r.checks[c.dataset.id];c.closest(".item").classList.toggle("done",c.checked)});progress();setStatus("기록을 불러왔습니다.")}
+function searchRecords(){const name=$("searchName").value.trim().toLowerCase(),date=$("searchDate").value,rs=Object.values(allRecords()).filter(r=>(!name||r.employee.toLowerCase().includes(name))&&(!date||r.date===date)).sort((a,b)=>b.date.localeCompare(a.date));const root=$("records");root.innerHTML="";if(!rs.length){root.textContent="검색 결과가 없습니다.";return}rs.forEach(r=>{const row=document.createElement("div");row.className="record";const info=document.createElement("div"),done=Object.values(r.checks).filter(Boolean).length,total=Object.keys(r.checks).length;info.innerHTML="<strong>"+esc(r.date)+" · "+esc(r.employee)+" · "+esc(r.shift)+"</strong><small>"+done+"/"+total+"개 완료 · "+esc(r.notes||"특이사항 없음")+"</small>";const b=document.createElement("button");b.className="btn";b.textContent="불러오기";b.onclick=()=>{ $("employee").value=r.employee;$("date").value=r.date;$("shift").value=r.shift;$("notes").value=r.notes||"";document.querySelectorAll('#checklist input').forEach(c=>{c.checked=!!r.checks[c.dataset.id];c.closest(".item").classList.toggle("done",c.checked)});progress();setStatus("기록을 불러왔습니다.")};row.append(info,b);root.appendChild(row)})}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function exportCSV(){const rs=Object.values(allRecords());if(!rs.length){setStatus("내보낼 기록이 없습니다.");return}const tasks=sections.flatMap((s,si)=>s[1].map((t,ii)=>({id:si+"-"+ii,label:s[0]+" - "+t[0]})));const rows=[["날짜","직원명","근무구분","특이사항",...tasks.map(t=>t.label)]];rs.forEach(r=>rows.push([r.date,r.employee,r.shift,r.notes,...tasks.map(t=>r.checks[t.id]?"완료":"미완료")]));const csv="\uFEFF"+rows.map(row=>row.map(x=>'"'+String(x??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="헬스장_체크리스트.csv";a.click();URL.revokeObjectURL(a.href)}
+$("save").onclick=save;$("load").onclick=load;$("csv").onclick=exportCSV;$("reset").onclick=()=>{if(confirm("현재 체크만 초기화할까요? 저장 기록은 삭제되지 않습니다.")){document.querySelectorAll('#checklist input').forEach(c=>{c.checked=false;c.closest(".item").classList.remove("done")});progress();setStatus("체크를 초기화했습니다.")}};$("search").onclick=searchRecords;$("all").onclick=()=>{$("searchName").value="";$("searchDate").value="";searchRecords()};
+$("shift").onchange=()=>{document.querySelectorAll(".section").forEach((d,i)=>d.open=sections[i][0].toLowerCase().includes($("shift").value.toLowerCase()))};
+render();
+</script></body></html>
