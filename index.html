@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>직원 업무 체크리스트</title>
+<!-- Supabase SDK 라이브러리 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--ink:#17191d;--muted:#737780;--line:#e4e6e9;--paper:#f4f5f6;--card:#fff;--dark:#17191d;--soft:#f0f1f3;--track:#e8e9ec;--accent:#24272d}
 *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic",Arial,sans-serif;letter-spacing:-.2px}
@@ -20,9 +22,14 @@ main{max-width:940px;margin:auto;padding:18px;display:grid;gap:15px}.card{backgr
 <div class="shift-pill" id="shiftPill">오픈 근무</div><div class="progressText" id="progressText">0 / 0 (0%)</div><div class="progress"><div id="progressBar"></div></div><div class="completion" id="completion"><span id="completionText">체크리스트를 완료해 주세요.</span><strong class="percent" id="completionPercent">0%</strong></div></section>
 <section class="card"><h2>체크리스트</h2><div class="warning">세정제는 제품 표시사항에 따라 사용하고 서로 다른 세정제를 섞지 마세요. 전기기기 내부에 물이 들어가지 않도록 주의하세요.</div><div id="checklist"></div>
 <div class="buttons"><button class="btn primary" id="save">저장하기</button><button class="btn" id="load">기록 불러오기</button><button class="btn" id="csv">CSV 내보내기</button><button class="btn" id="reset">체크 초기화</button></div><div class="status" id="status"></div></section>
-<section class="card"><h2>저장된 기록</h2><div class="fields"><label class="field">직원명으로 검색<input id="searchName" placeholder="직원명 입력"></label><label class="field">날짜로 검색<input id="searchDate" type="date"></label></div><div class="buttons"><button class="btn" id="search">기록 검색</button><button class="btn" id="all">전체 보기</button></div><div id="records" class="status">저장된 기록은 이 브라우저에서 검색할 수 있습니다.</div></section>
+<section class="card"><h2>저장된 기록</h2><div class="fields"><label class="field">직원명으로 검색<input id="searchName" placeholder="직원명 입력"></label><label class="field">날짜로 검색<input id="searchDate" type="date"></label></div><div class="buttons"><button class="btn" id="search">기록 검색</button><button class="btn" id="all">전체 보기</button></div><div id="records" class="status">저장된 기록은 클라우드에서 검색할 수 있습니다.</div></section>
 </main>
 <script>
+// --- Supabase 설정 (본인 정보 입력) ---
+const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 const sections=[
 ["오픈 - 출근 및 기본 정리",[
 ["출근 완료 여부를 대표님께 보고하기"],["필요시 옷 정리하기"],["실내화 분배하기"],["정수기 닦고 점검하기"],["종이컵·휴지 확인 및 보충하기"],["쓰레기통과 정수기 주변 정리하기"],["화장실 소변기 물 내리고 변기·세면대 솔로 닦기"],["화장실 바닥 세제로 물청소하기"],["청소기와 쓰레기통을 통행에 방해되지 않게 정리하기"],["탈의실 옷·수건·바닥 정리하기", "성별 구역에 맞게"],["정수기 옆 케틀벨·덤벨 정리하기"],["덤벨 3kg 위치 정리하기"],["폼롤러와 매트 정리하기"],["걸레로 정문·후문 신발장 닦기"],["남녀 가방 보관함 닦기"],["런닝머신 상단·버튼 주변 닦기"],["런닝머신 벨트 옆 발판 닦기","젖은 걸레 후 마른 수건으로 마무리"],["천국의 계단 전체 닦기"],["후문 담배꽁초·쓰레기 줍기","플라스틱 빗자루 사용"]]],
@@ -50,17 +57,101 @@ function render(){
 }
 function activeSection(sec){const shift=$("shift").value;if(shift==="오픈")return sec[0].startsWith("오픈");if(shift==="미들")return sec[0].startsWith("미들");return sec[0].startsWith("마감")}
 function applyShift(){const shift=$("shift").value;document.querySelectorAll(".section").forEach((d,i)=>{d.hidden=!activeSection(sections[i]);d.open=activeSection(sections[i])});$("shiftPill").textContent=shift+" 근무";progress()}
-function progress(){const visible=[...document.querySelectorAll('#checklist .section:not([hidden]) input[type=checkbox]')],done=visible.filter(x=>x.checked).length,total=visible.length,pct=total?Math.round(done/total*100):0;$("progressText").textContent=`현재 ${$("shift").value} 근무 · ${done} / ${total}개 완료 (${pct}%)`;$("progressBar").style.width=pct+"%";$("completionPercent").textContent=pct+"%";const complete=total>0&&done===total;$("completion").classList.toggle("done",complete);$("completionText").textContent=complete?"모든 체크리스트를 완료했습니다. 저장하기를 눌러 기록을 남겨주세요.":"현재 근무의 체크리스트 완료율";[...document.querySelectorAll(".section")].forEach((d,i)=>{const boxes=[...d.querySelectorAll("input")];d.querySelector("summary").textContent=sections[i][0]+` · ${boxes.filter(x=>x.checked).length}/${boxes.length}`})}
-function key(){return "gymcheck:"+$("date").value+":"+$("employee").value.trim().toLowerCase()+":"+$("shift").value}
-function allRecords(){try{return JSON.parse(localStorage.getItem("gymcheck_records")||"{}")}catch(e){return {}}}
-function current(){const checks={};document.querySelectorAll('#checklist input').forEach(c=>checks[c.dataset.id]=c.checked);return {employee:$("employee").value.trim(),date:$("date").value,shift:$("shift").value,notes:$("notes").value,checks,updated:new Date().toISOString()}}
+function progress(){const visible=[...document.querySelectorAll('#checklist .section:not([hidden]) input[type=checkbox]')],done=visible.filter(x=>x.checked).length,total=visible.length,pct=total?Math.round(done/total*100):0;$("progressText").textContent=`현재 ${$("shift").value} 근무 · ${done} / ${total}개 완료 (${pct}%)`;$("progressBar").style.width=pct+"\%";$("completionPercent").textContent=pct+"%";const complete=total>0&&done===total;$("completion").classList.toggle("done",complete);$("completionText").textContent=complete?"모든 체크리스트를 완료했습니다. 저장하기를 눌러 기록을 남겨주세요.":"현재 근무의 체크리스트 완료율";[...document.querySelectorAll(".section")].forEach((d,i)=>{const boxes=[...d.querySelectorAll("input")];d.querySelector("summary").textContent=sections[i][0]+` · ${boxes.filter(x=>x.checked).length}/${boxes.length}`})}
+function current(){const checks={};document.querySelectorAll('#checklist input').forEach(c=>checks[c.dataset.id]=c.checked);return {employee:$("employee").value.trim(),work_date:$("date").value,shift:$("shift").value,notes:$("notes").value,checks,updated_at:new Date().toISOString()}}
 function setStatus(s){$("status").textContent=s}
-function save(){const r=current();if(!r.employee||!r.date){setStatus("직원명과 근무 날짜를 입력해주세요.");return}const a=allRecords();a[key()]={...r,id:key()};localStorage.setItem("gymcheck_records",JSON.stringify(a));setStatus("저장 완료! 이 브라우저의 저장된 기록에 보관했습니다.");searchRecords()}
-function load(){const r=allRecords()[key()];if(!r){setStatus("해당 직원·날짜·근무 구분의 기록이 없습니다.");return}$("employee").value=r.employee;$("date").value=r.date;$("shift").value=r.shift;$("notes").value=r.notes||"";document.querySelectorAll('#checklist input').forEach(c=>{c.checked=!!r.checks[c.dataset.id];c.closest(".item").classList.toggle("done",c.checked)});progress();setStatus("기록을 불러왔습니다.")}
-function searchRecords(){const name=$("searchName").value.trim().toLowerCase(),date=$("searchDate").value,rs=Object.values(allRecords()).filter(r=>(!name||r.employee.toLowerCase().includes(name))&&(!date||r.date===date)).sort((a,b)=>b.date.localeCompare(a.date));const root=$("records");root.innerHTML="";if(!rs.length){root.textContent="검색 결과가 없습니다.";return}rs.forEach(r=>{const row=document.createElement("div");row.className="record";const info=document.createElement("div"),done=Object.values(r.checks).filter(Boolean).length,total=Object.keys(r.checks).length;info.innerHTML="<strong>"+esc(r.date)+" · "+esc(r.employee)+" · "+esc(r.shift)+"</strong><small>"+done+"/"+total+"개 완료 · "+esc(r.notes||"특이사항 없음")+"</small>";const b=document.createElement("button");b.className="btn";b.textContent="불러오기";b.onclick=()=>{ $("employee").value=r.employee;$("date").value=r.date;$("shift").value=r.shift;$("notes").value=r.notes||"";document.querySelectorAll('#checklist input').forEach(c=>{c.checked=!!r.checks[c.dataset.id];c.closest(".item").classList.toggle("done",c.checked)});progress();setStatus("기록을 불러왔습니다.")};row.append(info,b);root.appendChild(row)})}
+
+// --- Supabase 저장 로직 ---
+async function save(){
+ const r=current();
+ if(!r.employee||!r.work_date){setStatus("직원명과 근무 날짜를 입력해주세요.");return}
+ setStatus("클라우드에 저장 중...");
+ const { error } = await supabase.from('gym_checklist_records').insert([r]);
+ if(error){
+  console.error(error);
+  setStatus("저장 실패: " + error.message);
+ } else {
+  setStatus("클라우드 DB 저장 완료!");
+  searchRecords();
+ }
+}
+
+// --- Supabase 불러오기 로직 ---
+async function load(){
+ const emp = $("employee").value.trim();
+ const date = $("date").value;
+ const shift = $("shift").value;
+ if(!emp || !date){setStatus("직원명과 날짜를 입력해주세요.");return}
+ 
+ const { data, error } = await supabase.from('gym_checklist_records')
+   .select('*')
+   .eq('employee', emp)
+   .eq('work_date', date)
+   .eq('shift', shift)
+   .order('id', { ascending: false })
+   .limit(1);
+   
+ if(error || !data || data.length === 0){
+  setStatus("해당 기록이 없거나 불러오지 못했습니다.");
+  return;
+ }
+ const r = data[0];
+ $("employee").value=r.employee;
+ $("date").value=r.work_date;
+ $("shift").value=r.shift;
+ $("notes").value=r.notes||"";
+ document.querySelectorAll('#checklist input').forEach(c=>{c.checked=!!r.checks[c.dataset.id];c.closest(".item").classList.toggle("done",c.checked)});
+ progress();
+ setStatus("기록을 불러왔습니다.");
+}
+
+// --- Supabase 검색 로직 ---
+async function searchRecords(){
+ const name=$("searchName").value.trim();
+ const date=$("searchDate").value;
+ 
+ let query = supabase.from('gym_checklist_records').select('*').order('work_date', { ascending: false });
+ if(name) query = query.ilike('employee', `%${name}%`);
+ if(date) query = query.eq('work_date', date);
+ 
+ const { data: rs, error } = await query;
+ const root=$("records");
+ root.innerHTML="";
+ 
+ if(error || !rs || !rs.length){
+  root.textContent="검색 결과가 없습니다.";
+  return;
+ }
+ rs.forEach(r=>{
+  const row=document.createElement("div");row.className="record";
+  const info=document.createElement("div"), done=Object.values(r.checks).filter(Boolean).length, total=Object.keys(r.checks).length;
+  info.innerHTML="<strong>"+esc(r.work_date)+" · "+esc(r.employee)+" · "+esc(r.shift)+"</strong><small>"+done+"/"+total+"개 완료 · "+esc(r.notes||"특이사항 없음")+"</small>";
+  const b=document.createElement("button");b.className="btn";b.textContent="불러오기";
+  b.onclick=()=>{
+   $("employee").value=r.employee;$("date").value=r.work_date;$("shift").value=r.shift;$("notes").value=r.notes||"";
+   document.querySelectorAll('#checklist input').forEach(c=>{c.checked=!!r.checks[c.dataset.id];c.closest(".item").classList.toggle("done",c.checked)});
+   progress();setStatus("기록을 불러왔습니다.");
+  };
+  row.append(info,b);root.appendChild(row);
+ });
+}
+
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function exportCSV(){const rs=Object.values(allRecords());if(!rs.length){setStatus("내보낼 기록이 없습니다.");return}const tasks=sections.flatMap((s,si)=>s[1].map((t,ii)=>({id:si+"-"+ii,label:s[0]+" - "+t[0]})));const rows=[["날짜","직원명","근무구분","특이사항",...tasks.map(t=>t.label)]];rs.forEach(r=>rows.push([r.date,r.employee,r.shift,r.notes,...tasks.map(t=>r.checks[t.id]?"완료":"미완료")]));const csv="\uFEFF"+rows.map(row=>row.map(x=>'"'+String(x??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="헬스장_체크리스트.csv";a.click();URL.revokeObjectURL(a.href)}
-$("save").onclick=save;$("load").onclick=load;$("csv").onclick=exportCSV;$("reset").onclick=()=>{if(confirm("현재 체크만 초기화할까요? 저장 기록은 삭제되지 않습니다.")){document.querySelectorAll('#checklist input').forEach(c=>{c.checked=false;c.closest(".item").classList.remove("done")});progress();setStatus("체크를 초기화했습니다.")}};$("search").onclick=searchRecords;$("all").onclick=()=>{$("searchName").value="";$("searchDate").value="";searchRecords()};
+
+async function exportCSV(){
+ const { data: rs, error } = await supabase.from('gym_checklist_records').select('*');
+ if(error || !rs || !rs.length){setStatus("내보낼 기록이 없습니다.");return}
+ const tasks=sections.flatMap((s,si)=>s[1].map((t,ii)=>({id:si+"-"+ii,label:s[0]+" - "+t[0]})));
+ const rows=[["날짜","직원명","근무구분","특이사항",...tasks.map(t=>t.label)]];
+ rs.forEach(r=>rows.push([r.work_date,r.employee,r.shift,r.notes,...tasks.map(t=>r.checks[t.id]?"완료":"미완료")]));
+ const csv="\uFEFF"+rows.map(row=>row.map(x=>'"'+String(x??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
+ a.download="헬스장_체크리스트.csv";a.click();URL.revokeObjectURL(a.href);
+}
+
+$("save").onclick=save;$("load").onclick=load;$("csv").onclick=exportCSV;
+$("reset").onclick=()=>{if(confirm("현재 체크만 초기화할까요? 저장 기록은 삭제되지 않습니다.")){document.querySelectorAll('#checklist input').forEach(c=>{c.checked=false;c.closest(".item").classList.remove("done")});progress();setStatus("체크를 초기화했습니다.")}};
+$("search").onclick=searchRecords;$("all").onclick=()=>{$("searchName").value="";$("searchDate").value="";searchRecords()};
 $("shift").onchange=applyShift;
 render();applyShift();
 </script></body></html>
